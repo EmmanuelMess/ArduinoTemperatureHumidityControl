@@ -34,6 +34,11 @@ void App::setup() {
 
 void App::loop() {
 	const double now = secs();
+
+	if(now > 5000) {
+		asm("jmp 0x0000");
+	}
+
 	if(now - timeOfLastUpdate < UPDATE_INTERVAL) {
 		return;
 	}
@@ -77,12 +82,13 @@ void App::updateDisplay() {
 	lcd.setCursor(0,1);
 	lcd.print("T ");
 	lcd.print(heatActive? "On":"Off");
-	lcd.setCursor(8,1);
+	lcd.setCursor(5,1);
 	lcd.print("|H ");
 	lcd.print(humidifierActive? "On":"Off");
 
-	lcd.setCursor(14,1);
+	lcd.setCursor(11,1);
 
+	lcd.print("|0x");
 	lcd.print(toHex(timesHeatOn).number);
 }
 
@@ -138,7 +144,14 @@ double App::heatIndexApproximation(double temperature, double humidity) {
 	const double c7 = 2.211732e-3;
 	const double c8 = 7.2546e-4;
 	const double c9 = -3.582e-6;
-	return c1 + c2 * temperature + c3 * humidity + c4 * temperature * humidity + c5 * temperature * temperature + c6 * humidity * humidity + c7 * temperature * temperature * humidity + c8 * temperature * humidity * humidity + c9 * temperature * temperature * humidity * humidity;
+	return c1 + c2 * temperature
+	          + c3 * humidity
+			  + c4 * temperature * humidity
+			  + c5 * temperature * temperature
+			  + c6 * humidity * humidity
+			  + c7 * temperature * temperature * humidity
+			  + c8 * temperature * humidity * humidity
+			  + c9 * temperature * temperature * humidity * humidity;
 }
 
 void App::updateSensorInfo() {

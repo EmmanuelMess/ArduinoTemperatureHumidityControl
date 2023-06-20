@@ -4,8 +4,8 @@
 #include <Arduino.h>
 
 #include <Wire.h>
-#include <LiquidCrystal.h>
-#include <DHT.h>
+#include "LiquidCrystal.h"
+#include "DHT.h"
 
 /**
  * Main class app, tries to keep the state small
@@ -58,7 +58,7 @@ private:
 	/**
 	 * In seconds
 	 */
-	const float UPDATE_INTERVAL = 2;//5*60;
+	const float UPDATE_INTERVAL = 5*60;
 
 	const uint8_t SENSOR_PIN = 2;
 	const int SENSOR_TYPE = DHT11;
